@@ -1,50 +1,30 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="/util/vanilla-masker.min.js"></script>
-    <script src="/util/jquery-3.4.1.js"></script>
+    <title>Eventos - Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="/lib/vanilla-masker.min.js"></script>
+    <script src="/lib/jquery-3.4.1.js"></script>
+    <script src="/util/api.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
     <input type="checkbox" id="form-switch" />
-    <form id="login-form" action="login" method="post">
-      <input type="email" placeholder="Email" required />
-      <input type="password" placeholder="Senha" required />
+    <form id="login-form">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Senha" required />
       <button type="submit">Login</button>
       <label for="form-switch"><span>Cadastre-se</span></label>
     </form>
-    <form id="register-form" action="" method="post">
-      <input type="text" placeholder="Nome" required />
-      <input type="email" placeholder="Email" required />
-      <input
-        id="password"
-        type="password"
-        placeholder="Senha"
-        required
-        minlength="8"
-      />
-      <input
-        id="confirm_password"
-        type="password"
-        placeholder="Confimar Senha"
-        required
-        minlength="8"
-      />
-      <input type="date" placeholder="Data de nascimento" required />
-      <input
-        type="text"
-        placeholder="CPF"
-        data-mask="999.999.999-99"
-        required
-        pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
-      />
-      <input
-        type="text"
-        placeholder="Telefone"
-        data-mask="(99) 99999-9999"
-        required
-        pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}"
-      />
+    <form id="register-form">
+      <input type="text" name="name" placeholder="Nome" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input id="password" type="password" name="password" placeholder="Senha" required minlength="8" />
+      <input id="confirm-password" type="password" placeholder="Confimar Senha" required minlength="8" />
+      <input type="date" name="dt_birth" placeholder="Data de nascimento" required />
+      <input type="text" name="cpf" placeholder="CPF" data-mask="999.999.999-99" required pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}" />
+      <input type="text" name="phone" placeholder="Telefone" data-mask="(99) 99999-9999" required pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}" />
       <button type="submit">Registrar</button>
       <label for="form-switch">Já possui cadastro? Entre agora...</label>
     </form>
