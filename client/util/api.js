@@ -1,45 +1,28 @@
-const BASE_URL = 'http://127.0.0.1:8080/api';
-
-function config(method, data, authorization) {
-  const config = {};
-
-  config.method = method;
-  config.mode = 'no-cors';
-  config.headers = {
-    'Content-Type': 'application/json'
-  };
-
-  if (authorization) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  }
-
-  config.body = JSON.stringify(data);
-
-  return config;
+function request(method, url, data) {
+  return axios({
+    method: method,
+    url: `http://127.0.0.1:8080/api/${url}`,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    },
+    data: data
+  });
 }
 
-window.api = {
-  get: async function(url = '', data = {}, authorization = true) {
-    const response = await fetch(`${BASE_URL}/${url}`, config('GET', data, authorization));
-
-    return await response.json();
+const API = {
+  get: (url = '', data = {}) => {
+    return request('get', url, data);
   },
 
-  post: async function(url = '', data = {}, authorization = true) {
-    const response = await fetch(`${BASE_URL}/${url}`, config('POST', data, authorization));
-
-    return await response.json();
+  post: (url = '', data = {}) => {
+    return request('post', url, data);
   },
 
-  put: async function(url = '', data = {}, authorization = true) {
-    const response = await fetch(`${BASE_URL}/${url}`, config('PUT', data, authorization));
-
-    return await response.json();
+  put: (url = '', data = {}) => {
+    return request('put', url, data);
   },
 
-  delete: async function(url = '', data = {}, authorization = true) {
-    const response = await fetch(`${BASE_URL}/${url}`, config('DELETE', data, authorization));
-
-    return await response.json();
+  delete: (url = '', data = {}) => {
+    return request('delete', url, data);
   }
 };

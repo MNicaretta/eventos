@@ -25,32 +25,56 @@ $(document).ready(function() {
 });
 
 async function login(form) {
-  const res = await window.api.post(
-    'login',
-    {
+  try {
+    const res = await API.post('login', {
       email: form.email.value,
       password: form.password.value
-    },
-    false
-  );
+    });
 
-  if (res && res.auth) {
-    localStorage.setItem('token', res.token);
-    window.location.href = '/';
+    form.password.value = '';
+
+    if (res && res.data && res.data.auth) {
+      localStorage.setItem('token', res.data.token);
+      window.location.href = '/';
+    } else {
+      alert('Email ou senha incorretos');
+    }
+  } catch (err) {
+    if (err.isAxiosError) {
+      let message = 'Não foi possivel fazer login';
+
+      if (err.response && err.response.data && err.response.data.message) {
+        message = err.response.data.message;
+      }
+
+      alert(message);
+    }
   }
 }
 
 async function register(form) {
-  window.api.post(
-    'register',
-    {
+  try {
+    const res = await API.post('register', {
       name: form.name.value,
       email: form.email.value,
       password: form.password.value,
-      dt_birth: form.dt_birth.value,
-      cpf: VMasker.toNumber(form.cpf.value),
-      phone: VMasker.toNumber(form.phone.value)
-    },
-    false
-  );
+      dtBirth: form.dtBirth.value,
+      cpf: VMasker.toNumber(form.cpf.value)
+    });
+
+    if (res && res.data && res.data.user) {
+      form.reset();
+      alert('Usuário cadastrado com sucesso');
+    }
+  } catch (err) {
+    if (err.isAxiosError) {
+      let message = 'Não foi possivel cadastrar usuário';
+
+      if (err.response && err.response.data && err.response.data.message) {
+        message = err.response.data.message;
+      }
+
+      alert(message);
+    }
+  }
 }
