@@ -18,12 +18,12 @@ module.exports = {
 
       user.id = results.insertId;
 
-      return res.status(200).send({ user });
+      return res.send({ user });
     } catch (err) {
-      console.error(err);
       if (err.code == 'ER_DUP_ENTRY') {
         return res.status(400).send({ message: 'Email ja cadastrado' });
       } else {
+        console.error(err);
         return res.status(500).send();
       }
     }

@@ -21,7 +21,7 @@ CREATE TABLE registrations(
     ref_event INT NOT NULL,
     `state` TINYINT NOT NULL,
     dt_registration TIMESTAMP NOT NULL,
-    certificate_code VARCHAR(255) NOT NULL,
+    certificate_code VARCHAR(255) NULL,
     PRIMARY KEY(ref_user, ref_event),
     CONSTRAINT registration_user FOREIGN KEY (ref_user) REFERENCES users(id),
     CONSTRAINT registration_event FOREIGN KEY (ref_event) REFERENCES events(id)
