@@ -23,10 +23,10 @@ label {
 #form-switch {
   display: none;
 }
-#register-form {
+#signup-form {
   display: none;
 }
-#form-switch:checked ~ #register-form {
+#form-switch:checked ~ #signup-form {
   display: block;
 }
 #form-switch:checked ~ #login-form {

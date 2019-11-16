@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const DBHelper = require('./util/DBHelper');
 
 module.exports = {
-  register: async (req, res) => {
+  signup: async (req, res) => {
     const user = {
       name: req.body.name,
       email: req.body.email,

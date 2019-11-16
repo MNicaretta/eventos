@@ -1,8 +1,8 @@
 FROM node:latest
 
-COPY . /register
+COPY . /signup
 
-WORKDIR /register
+WORKDIR /signup
 
 RUN npm install --production
 

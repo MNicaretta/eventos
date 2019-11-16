@@ -18,9 +18,9 @@ $(document).ready(function() {
     login(e.target);
   });
 
-  $('#register-form').on('submit', e => {
+  $('#signup-form').on('submit', e => {
     e.preventDefault();
-    register(e.target);
+    signup(e.target);
   });
 });
 
@@ -52,9 +52,9 @@ async function login(form) {
   }
 }
 
-async function register(form) {
+async function signup(form) {
   try {
-    const res = await API.post('register', {
+    const res = await API.post('signup', {
       name: form.name.value,
       email: form.email.value,
       password: form.password.value,
