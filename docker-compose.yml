@@ -33,10 +33,21 @@ services:
     environment:
       - DB_HOST=db
 
+  registration:
+    build: './api/registration'
+    ports:
+      - '3004:3000'
+    volumes:
+      - ./api/util:/registration/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   cancel:
     build: './api/cancel'
     ports:
-      - '3004:3000'
+      - '3005:3000'
     volumes:
       - ./api/util:/cancel/src/util
     depends_on:
