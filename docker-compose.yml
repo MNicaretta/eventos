@@ -33,6 +33,17 @@ services:
     environment:
       - DB_HOST=db
 
+  cancel:
+    build: './api/cancel'
+    ports:
+      - '3004:3000'
+    volumes:
+      - ./api/util:/cancel/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   flyway:
     image: flyway/flyway:latest
     command: -url=jdbc:mysql://db -schemas=eventos -user=root -password=root -connectRetries=60 migrate
@@ -61,6 +72,7 @@ services:
       - login
       - signup
       - register
+      - cancel
 
 volumes:
   my-datavolume:

@@ -2,15 +2,13 @@ const DBHelper = require('./util/DBHelper');
 const constants = require('./util/const');
 
 module.exports = {
-  getEvents: async (req, res) => {
+  getRegistrations: async (req, res) => {
     try {
       const results = await DBHelper.query(
         `
-        SELECT * FROM events
-        WHERE id NOT IN (
-          SELECT ref_event FROM registrations
-          WHERE ref_user = ?
-        )
+        SELECT * FROM events e, registrations r
+        WHERE e.id = r.ref_event
+        AND r.ref_user = ?
         `,
         [req.user.id]
       );
@@ -20,16 +18,19 @@ module.exports = {
       return res.status(500).send();
     }
   },
-  register: async (req, res) => {
+  cancel: async (req, res) => {
     try {
       let registration = {
         ref_user: req.body.userId,
         ref_event: req.body.eventId,
-        dt_registration: req.body.dtRegistration,
-        state: constants.REGISTRATION.STATE_REGISTERED
+        state: constants.REGISTRATION.STATE_CANCELED
       };
 
-      await DBHelper.query('INSERT INTO registrations SET ?', registration);
+      await DBHelper.query('UPDATE registrations SET state = ? WHERE ref_user = ? and ref_event = ?', [
+        registration.state,
+        registration.ref_user,
+        registration.ref_event
+      ]);
 
       registration = (
         await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [
@@ -40,12 +41,8 @@ module.exports = {
 
       return res.send({ registration });
     } catch (err) {
-      if (err.code == 'ER_DUP_ENTRY') {
-        return res.status(400).send({ message: 'Usuário já cadastrado no evento' });
-      } else {
-        console.error(err);
-        return res.status(500).send();
-      }
+      console.error(err);
+      return res.status(500).send();
     }
   }
 };
