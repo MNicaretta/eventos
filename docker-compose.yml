@@ -55,6 +55,17 @@ services:
     environment:
       - DB_HOST=db
 
+  checkin:
+    build: './api/checkin'
+    ports:
+      - '3006:3000'
+    volumes:
+      - ./api/util:/checkin/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   flyway:
     image: flyway/flyway:latest
     command: -url=jdbc:mysql://db -schemas=eventos -user=root -password=root -connectRetries=60 migrate
