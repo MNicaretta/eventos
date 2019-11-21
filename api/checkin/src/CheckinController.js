@@ -2,11 +2,11 @@ const DBHelper = require('./util/DBHelper');
 const constants = require('./util/const');
 
 module.exports = {
-  cancel: async (req, res) => {
+  checkin: async (req, res) => {
     try {
       let registration = {
-        ref_user: req.body.userId,
-        ref_event: req.body.eventId,
+        ref_user: req.user.id,
+        ref_event: req.params.eventId,
         state: constants.REGISTRATION.STATE_CHECKIN
       };
 

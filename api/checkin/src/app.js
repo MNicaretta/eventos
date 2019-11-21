@@ -12,6 +12,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(authenticate);
 
-app.post('/api/cancel', CheckinController.cancel);
+app.put('/api/checkin/:eventId', CheckinController.checkin);
 
 app.listen(3000, () => console.log('running on port 3000'));

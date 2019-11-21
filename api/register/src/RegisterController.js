@@ -23,19 +23,15 @@ module.exports = {
   register: async (req, res) => {
     try {
       let registration = {
-        ref_user: req.body.userId,
-        ref_event: req.body.eventId,
-        dt_registration: req.body.dtRegistration,
+        ref_user: req.user.id,
+        ref_event: req.params.eventId,
         state: constants.REGISTRATION.STATE_REGISTERED
       };
 
       await DBHelper.query('INSERT INTO registrations SET ?', registration);
 
       registration = (
-        await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [
-          registration.ref_user,
-          registration.ref_event
-        ])
+        await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [registration.ref_user, registration.ref_event])
       )[0];
 
       return res.send({ registration });

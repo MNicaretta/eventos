@@ -2,7 +2,7 @@ $(document).ready(() => buildTable());
 
 async function buildTable() {
   try {
-    const res = await API.get('events');
+    const res = await API.get('registrations');
 
     if (res && res.data) {
       const table = document.getElementById('events-table');
@@ -16,16 +16,24 @@ async function buildTable() {
           const name = document.createElement('td');
           const description = document.createElement('td');
           const dateEvent = document.createElement('td');
+          const dateRegister = document.createElement('td');
           const buttonContainer = document.createElement('td');
           const button = document.createElement('button');
+
+          const state = item.state;
 
           name.innerHTML = item.name;
           description.innerHTML = item.description;
           dateEvent.innerHTML = formatDate(new Date(item.dt_event));
-          button.innerHTML = 'Inscrever';
+          dateRegister.innerHTML = formatDate(new Date(item.dt_registration));
+          button.innerHTML = state == 1 ? 'Cancelar' : 'Gerar certificado';
 
           button.addEventListener('click', () => {
-            register(item);
+            if (state == 1) {
+              cancel(item);
+            } else {
+              //generateCertificate(item);
+            }
           });
 
           buttonContainer.appendChild(button);
@@ -33,6 +41,7 @@ async function buildTable() {
           tr.appendChild(name);
           tr.appendChild(description);
           tr.appendChild(dateEvent);
+          tr.appendChild(dateRegister);
           tr.appendChild(buttonContainer);
 
           table.appendChild(tr);
@@ -52,12 +61,12 @@ async function buildTable() {
   }
 }
 
-async function register(event) {
-  const res = await API.post('register/' + event.id);
+async function cancel(event) {
+  const res = await API.delete('cancel/' + event.id);
 
   if (res && res.data) {
     buildTable();
-    alert('Inscrição no evento ' + event.name + ' realizada com sucesso!');
+    alert('Cancelamento do evento ' + event.name + ' realizada com sucesso!');
   } else {
     alert('Falha na inscrição!');
   }

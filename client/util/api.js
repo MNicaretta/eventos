@@ -1,7 +1,7 @@
 function request(method, url, data) {
   return axios({
     method: method,
-    url: `http://127.0.0.1:8080/api/${url}`,
+    url: `/api/${url}`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     },

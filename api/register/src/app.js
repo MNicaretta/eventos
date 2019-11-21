@@ -13,6 +13,6 @@ app.use(cors());
 app.use(authenticate);
 
 app.get('/api/events', RegisterController.getEvents);
-app.post('/api/register', RegisterController.register);
+app.post('/api/register/:eventId', RegisterController.register);
 
 app.listen(3000, () => console.log('running on port 3000'));

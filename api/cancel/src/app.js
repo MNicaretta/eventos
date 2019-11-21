@@ -12,6 +12,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(authenticate);
 
-app.post('/api/cancel', CancelController.cancel);
+app.delete('/api/cancel/:eventId', CancelController.cancel);
 
 app.listen(3000, () => console.log('running on port 3000'));
