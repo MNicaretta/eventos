@@ -14,7 +14,11 @@ module.exports = {
     try {
       user.password = await bcrypt.hash(user.password, 10);
 
-      const results = await DBHelper.query('INSERT INTO users SET ?', user);
+      const results = await DBHelper.query(
+        'INSERT INTO users SET ?' +
+          'ON DUPLICATE KEY UPDATE name = VALUES(name), password = VALUES(password), dt_birth = VALUES(dt_birth), cpf = VALUES(cpf)',
+        user
+      );
 
       user.id = results.insertId;
 

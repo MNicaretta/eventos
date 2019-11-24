@@ -21,8 +21,6 @@ module.exports = {
 
       users = await DBHelper.query('SELECT id FROM users WHERE email IN (?)', [req.body]);
 
-      console.log(users);
-
       users.forEach(u => {
         promises.push(
           DBHelper.query('INSERT INTO registrations SET ? ON DUPLICATE KEY UPDATE state = VALUES(state)', {
