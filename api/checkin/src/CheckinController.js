@@ -4,26 +4,38 @@ const constants = require('./util/const');
 module.exports = {
   checkin: async (req, res) => {
     try {
-      let registration = {
-        ref_user: req.user.id,
-        ref_event: req.params.eventId,
-        state: constants.REGISTRATION.STATE_CHECKIN
+      let promises = [];
+
+      req.body.forEach(u => {
+        promises.push(DBHelper.query('INSERT IGNORE INTO users SET ?', { email: u }));
+      });
+
+      await Promise.all(promises);
+
+      promises = [];
+
+      const registration = {
+        eventId: req.params.eventId,
+        state: constants.REGISTRATION.STATE_REGISTERED
       };
 
-      await DBHelper.query('UPDATE registrations SET state = ? WHERE ref_user = ? and ref_event = ?', [
-        registration.state,
-        registration.ref_user,
-        registration.ref_event
-      ]);
+      users = await DBHelper.query('SELECT id FROM users WHERE email IN (?)', [req.body]);
 
-      registration = (
-        await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [
-          registration.ref_user,
-          registration.ref_event
-        ])
-      )[0];
+      console.log(users);
 
-      return res.send({ registration });
+      users.forEach(u => {
+        promises.push(
+          DBHelper.query('INSERT INTO registrations SET ? ON DUPLICATE KEY UPDATE state = VALUES(state)', {
+            ref_user: u.id,
+            ref_event: registration.eventId,
+            state: registration.state
+          })
+        );
+      });
+
+      await Promise.all(promises);
+
+      return res.send({ msg: `${users.length} usuários registrados` });
     } catch (err) {
       console.error(err);
       return res.status(500).send();
