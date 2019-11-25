@@ -12,6 +12,12 @@ module.exports = {
     };
 
     try {
+      const result = await DBHelper.query('SELECT * FROM users WHERE email = ?', [user.email]);
+
+      if (result && result[0] && result[0].name) {
+        return res.status(400).send({ message: 'Email ja cadastrado' });
+      }
+
       user.password = await bcrypt.hash(user.password, 10);
 
       const results = await DBHelper.query(
@@ -24,12 +30,8 @@ module.exports = {
 
       return res.send({ user });
     } catch (err) {
-      if (err.code == 'ER_DUP_ENTRY') {
-        return res.status(400).send({ message: 'Email ja cadastrado' });
-      } else {
-        console.error(err);
-        return res.status(500).send();
-      }
+      console.error(err);
+      return res.status(500).send();
     }
   }
 };
