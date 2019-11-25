@@ -22,7 +22,7 @@ module.exports = {
 
       const results = await DBHelper.query(
         'INSERT INTO users SET ?' +
-          'ON DUPLICATE KEY UPDATE name = VALUES(name), password = VALUES(password), dt_birth = VALUES(dt_birth), cpf = VALUES(cpf)',
+          ' ON DUPLICATE KEY UPDATE name = VALUES(name), password = VALUES(password), dt_birth = VALUES(dt_birth), cpf = VALUES(cpf)',
         user
       );
 
