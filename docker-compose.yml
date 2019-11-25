@@ -77,6 +77,17 @@ services:
     environment:
       - DB_HOST=db
 
+  validate:
+    build: './api/validate'
+    ports:
+      - '3008:3000'
+    volumes:
+      - ./api/util:/validate/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   flyway:
     image: flyway/flyway:latest
     command: -url=jdbc:mysql://db -schemas=eventos -user=root -password=root -connectRetries=60 migrate

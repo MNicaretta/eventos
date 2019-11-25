@@ -6,10 +6,7 @@ const uuidv4 = require('uuid/v4');
 module.exports = {
   certificate: async (req, res) => {
     try {
-      const result = await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [
-        req.user.id,
-        req.params.eventId
-      ]);
+      const result = await DBHelper.query('SELECT * FROM registrations WHERE certificate_code = ?', [req.body.code]);
 
       if (result && result[0]) {
         const registration = result[0];
@@ -17,14 +14,6 @@ module.exports = {
         if (registration.state === constants.REGISTRATION.STATE_CHECKIN) {
           const event = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_event]))[0];
           const user = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_user]))[0];
-
-          const uuid = uuidv4();
-
-          DBHelper.query('UPDATE registrations SET certificate_code = ? WHERE ref_user = ? and ref_event = ?', [
-            uuid,
-            registration.ref_user,
-            registration.ref_event
-          ]);
 
           const doc = new PDFDocument();
           doc.pipe(res);
