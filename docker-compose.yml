@@ -66,6 +66,17 @@ services:
     environment:
       - DB_HOST=db
 
+  certificate:
+    build: './api/certificate'
+    ports:
+      - '3007:3000'
+    volumes:
+      - ./api/util:/certificate/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   flyway:
     image: flyway/flyway:latest
     command: -url=jdbc:mysql://db -schemas=eventos -user=root -password=root -connectRetries=60 migrate
@@ -95,6 +106,8 @@ services:
       - signup
       - register
       - cancel
+      - checkin
+      - certificate
 
 volumes:
   my-datavolume:

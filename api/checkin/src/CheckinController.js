@@ -16,7 +16,7 @@ module.exports = {
 
       const registration = {
         eventId: req.params.eventId,
-        state: constants.REGISTRATION.STATE_REGISTERED
+        state: constants.REGISTRATION.STATE_CHECKIN
       };
 
       users = await DBHelper.query('SELECT id FROM users WHERE email IN (?)', [req.body]);
