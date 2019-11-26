@@ -62,3 +62,7 @@ async function register(event) {
     alert('Falha na inscrição!');
   }
 }
+
+function goToRegistrations() {
+  window.location.href = '/registration';
+}

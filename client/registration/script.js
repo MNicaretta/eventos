@@ -75,11 +75,15 @@ async function cancel(event) {
 async function certificate(event) {
   const res = await API.get('certificate/' + event.id);
 
-  const url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+  const url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf;charset=UTF-8', encoding: 'UTF-8' }));
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', 'file.pdf'); //or any other extension
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+function goToEvents() {
+  window.location.href = '../';
 }

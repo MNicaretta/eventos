@@ -1,5 +1,6 @@
 const DBHelper = require('./util/DBHelper');
 const constants = require('./util/const');
+const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const uuidv4 = require('uuid/v4');
 
@@ -26,8 +27,11 @@ module.exports = {
             registration.ref_event
           ]);
 
+          const filePath = `./certificate${uuid}.pdf`;
+          const fileStream = fs.createWriteStream(filePath);
+
           const doc = new PDFDocument();
-          doc.pipe(res);
+          doc.pipe(fileStream);
 
           doc.fontSize('13').text(
             `Usuário: ${user.name} - ${user.email}
@@ -36,6 +40,10 @@ module.exports = {
           );
 
           doc.end();
+
+          fileStream.addListener('finish', () => {
+            res.download(filePath);
+          });
         } else {
           res.status(400).send({ message: 'Usuário não fez checkin' });
         }

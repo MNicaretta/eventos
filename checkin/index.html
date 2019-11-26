@@ -1,24 +1,29 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="style.css" rel="stylesheet" />
     <script src="/lib/jquery-3.4.1.js"></script>
     <script src="/lib/axios.min.js"></script>
-    <script src="/util/api.js"></script>
-    <script src="/util/auth.js"></script>
+    <link href="style.css" rel="stylesheet" />
     <script src="script.js"></script>
+    <script src="util/script.js"></script>
+    <script src="/util/api.js"></script>
   </head>
+
   <body>
-    <button id="all-events" onclick="goToEvents();">Eventos</button>
     <table id="events-table" style="width: 100%">
       <tr id="header">
         <th>Nome</th>
         <th>Descrição</th>
         <th>Data do Evento</th>
-        <th>Data do Registro</th>
         <th></th>
       </tr>
     </table>
+
+    <div id="email-container">
+      <b>E-mail: </b>
+      <input type="text" id="email-input" />
+      <button id="email-button">Adicionar</button>
+      <button id="synch-button">Sincronizar</button>
+    </div>
   </body>
 </html>
