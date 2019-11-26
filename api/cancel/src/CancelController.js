@@ -21,7 +21,7 @@ module.exports = {
         registration.ref_event
       ]);
 
-      mail('Cancelament', 'cancel', registration.ref_user, registration.ref_event);
+      mail('Cancelamento', 'cancel', registration.ref_user, registration.ref_event);
 
       return res.send({ registration });
     } catch (err) {

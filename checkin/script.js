@@ -64,31 +64,8 @@ function refresh() {
 
 async function buildTable() {
   try {
-    //const res = await API.get('Allevents');
-    const res = {
-      data: [
-        {
-          id: 1,
-          name: 'Evento 1',
-          dt_event: '2019-11-25'
-        },
-        {
-          id: 2,
-          name: 'Evento 2',
-          dt_event: '2019-11-25'
-        },
-        {
-          id: 3,
-          name: 'Evento 3',
-          dt_event: '2019-11-25'
-        },
-        {
-          id: 4,
-          name: 'Evento 4',
-          dt_event: '2019-11-25'
-        }
-      ]
-    };
+    const res = await API.get('allEvents');
+
     if (res && res.data) {
       const table = document.getElementById('events-table');
       const header = document.getElementById('header');

@@ -17,7 +17,8 @@ module.exports = async (subject, template, userId, eventId) => {
           name: user.name,
           email: user.email,
           event: event.name,
-          date: event.dt_event
+          date: event.dt_event,
+          code: event.code
         }
       })
     });

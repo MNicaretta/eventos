@@ -15,35 +15,36 @@ function readHTMLFile(path, callback) {
 
 module.exports = {
   sendMail: async (req, res) => {
-    readHTMLFile(`${__dirname}/../templates/${req.body.template}.html`, (err, html) => {
-      if (!err) {
-        const template = handlebars.compile(html);
-        const htmlToSend = template(req.body.replacements);
-        const mailOptions = {
-          from: process.env.MAIL_USER,
-          to: req.body.toMail,
-          subject: req.body.subject,
-          html: htmlToSend
-        };
-        const transporter = nodemailer.createTransport({
-          host: process.env.MAIL_HOST,
-          secure: process.env.MAIL_SECURE,
-          port: process.env.MAIL_PORT,
-          auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS
-          }
-        });
-        transporter.sendMail(mailOptions, (error, response) => {
-          if (error) {
-            console.error(error);
-            return res.status(500).send();
-          }
+    readHTMLFile(`${__dirname}/../templates/${req.body.template}.html`, async (err, html) => {
+      try {
+        if (!err) {
+          const template = handlebars.compile(html);
+          const htmlToSend = template(req.body.replacements);
+          const mailOptions = {
+            from: process.env.MAIL_USER,
+            to: req.body.toMail,
+            subject: req.body.subject,
+            html: htmlToSend
+          };
+          const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            secure: process.env.MAIL_SECURE,
+            port: process.env.MAIL_PORT,
+            auth: {
+              user: process.env.MAIL_USER,
+              pass: process.env.MAIL_PASS
+            }
+          });
 
-          res.stats(200).send();
-        });
-      } else {
-        console.error(err);
+          await transporter.sendMail(mailOptions);
+
+          res.status(200).send();
+        } else {
+          console.log(err);
+          return res.status(500).send();
+        }
+      } catch (err) {
+        console.log(err);
         return res.status(500).send();
       }
     });

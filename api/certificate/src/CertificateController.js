@@ -22,11 +22,15 @@ module.exports = {
 
           const uuid = uuidv4();
 
-          DBHelper.query('UPDATE registrations SET certificate_code = ? WHERE ref_user = ? and ref_event = ?', [
-            uuid,
-            registration.ref_user,
-            registration.ref_event
-          ]);
+          if (!event.code) {
+            DBHelper.query('UPDATE registrations SET certificate_code = ? WHERE ref_user = ? and ref_event = ?', [
+              uuid,
+              registration.ref_user,
+              registration.ref_event
+            ]);
+
+            mail('Certificado', 'certificate', user.id, event.id);
+          }
 
           const filePath = `./certificate${uuid}.pdf`;
           const fileStream = fs.createWriteStream(filePath);
@@ -43,7 +47,6 @@ module.exports = {
           doc.end();
 
           fileStream.addListener('finish', () => {
-            mail('Certificado', 'certificate', user.id, event.id);
             res.download(filePath);
           });
         } else {
