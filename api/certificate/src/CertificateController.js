@@ -3,6 +3,7 @@ const constants = require('./util/const');
 const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const uuidv4 = require('uuid/v4');
+const mail = require('./util/mail');
 
 module.exports = {
   certificate: async (req, res) => {
@@ -17,7 +18,7 @@ module.exports = {
 
         if (registration.state === constants.REGISTRATION.STATE_CHECKIN) {
           const event = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_event]))[0];
-          const user = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_user]))[0];
+          const user = (await DBHelper.query('SELECT * FROM users where id = ?', [registration.ref_user]))[0];
 
           const uuid = uuidv4();
 
@@ -42,6 +43,7 @@ module.exports = {
           doc.end();
 
           fileStream.addListener('finish', () => {
+            mail('Certificado', 'certificate', user.id, event.id);
             res.download(filePath);
           });
         } else {

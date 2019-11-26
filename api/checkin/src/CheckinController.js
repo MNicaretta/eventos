@@ -1,5 +1,6 @@
 const DBHelper = require('./util/DBHelper');
 const constants = require('./util/const');
+const mail = require('./util/mail');
 
 module.exports = {
   checkin: async (req, res) => {
@@ -32,6 +33,10 @@ module.exports = {
       });
 
       await Promise.all(promises);
+
+      users.forEach(u => {
+        mail('Check-in', 'checkin', u.id, registration.eventId);
+      });
 
       return res.send({ msg: `${users.length} usuários registrados` });
     } catch (err) {

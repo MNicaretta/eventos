@@ -1,5 +1,5 @@
 const DBHelper = require('./util/DBHelper');
-const constants = require('./util/const');
+const mail = require('./util/mail');
 
 module.exports = {
   cancel: async (req, res) => {
@@ -20,6 +20,8 @@ module.exports = {
         registration.ref_user,
         registration.ref_event
       ]);
+
+      mail('Cancelament', 'cancel', registration.ref_user, registration.ref_event);
 
       return res.send({ registration });
     } catch (err) {

@@ -88,6 +88,17 @@ services:
     environment:
       - DB_HOST=db
 
+  mail:
+    build: './api/mail'
+    ports:
+      - '3009:3000'
+    volumes:
+      - ./api/util:/mail/src/util
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
   flyway:
     image: flyway/flyway:latest
     command: -url=jdbc:mysql://db -schemas=eventos -user=root -password=root -connectRetries=60 migrate

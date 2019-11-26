@@ -15,7 +15,7 @@ module.exports = {
 
         if (registration.state === constants.REGISTRATION.STATE_CHECKIN) {
           const event = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_event]))[0];
-          const user = (await DBHelper.query('SELECT * FROM events where id = ?', [registration.ref_user]))[0];
+          const user = (await DBHelper.query('SELECT * FROM users where id = ?', [registration.ref_user]))[0];
 
           const filePath = `./certificate${uuidv4()}.pdf`;
           const fileStream = fs.createWriteStream(filePath);

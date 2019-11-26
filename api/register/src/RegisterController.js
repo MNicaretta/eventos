@@ -1,5 +1,6 @@
 const DBHelper = require('./util/DBHelper');
 const constants = require('./util/const');
+const mail = require('./util/mail');
 
 module.exports = {
   getEvents: async (req, res) => {
@@ -31,8 +32,13 @@ module.exports = {
       await DBHelper.query('INSERT INTO registrations SET ?', registration);
 
       registration = (
-        await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [registration.ref_user, registration.ref_event])
+        await DBHelper.query('SELECT * FROM registrations WHERE ref_user = ? AND ref_event = ?', [
+          registration.ref_user,
+          registration.ref_event
+        ])
       )[0];
+
+      mail('Inscrição', 'register', registration.ref_user, registration.ref_event);
 
       return res.send({ registration });
     } catch (err) {
